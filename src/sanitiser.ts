@@ -1,10 +1,22 @@
-const check = require('check-types');
-const type = require('type-detect');
-const { globalConfig } = require('./config/defaultConfigs');
-const { getJestTestPath, getJestTestFolder, isJest } = require('./helpers/jest-helper');
-const { getFixtureFile, getFixtureFolder } = require('./helpers/file-helper');
+//const check = require('check-types');
+import check from 'check-types';
 
-const logError = (name, wrongType, correctType) => {
+//const type = require('type-detect');
+import type from 'type-detect';
+
+//const { globalConfig } = require('./config/defaultConfigs');
+import { globalConfig } from './config/defaultConfigs';
+
+//const { getJestTestPath, getJestTestFolder, isJest } = require('./helpers/jest-helper');
+import { getJestTestPath, getJestTestFolder, isJest } from './helpers/jest-helper';
+
+//const { getFixtureFile, getFixtureFolder } = require('./helpers/file-helper');
+import { getFixtureFile, getFixtureFolder } from './helpers/file-helper';
+
+import { configurationObj } from './custom-types';
+
+//const logError = (name, wrongType, correctType) => {
+const logError = (name: string, wrongType: string, correctType: string) => {
   throw new Error(`Invalid argument ${name} with type ${wrongType} been passed. Argument should be ${correctType}`);
 };
 
@@ -20,8 +32,10 @@ const checkProperty = (obj, property, checkType) => {
   return hasProperty;
 };
 
-const sanitiseConfiguration = (conf) => {
-  const configuration = {};
+//const sanitiseConfiguration = (conf) => {
+const sanitiseConfiguration = (conf: configurationObj) => {
+  //const configuration = {};
+  let configuration: configurationObj;
 
   if (checkProperty(conf, 'fixturesDir', 'string')) {
     configuration.fixturesDir = conf.fixturesDir;
@@ -63,4 +77,5 @@ const sanitiseConfiguration = (conf) => {
   return configuration;
 };
 
-module.exports = sanitiseConfiguration;
+//module.exports = sanitiseConfiguration;
+export { sanitiseConfiguration };

@@ -1,4 +1,5 @@
-const sanitiseConfiguration = require('./sanitiser');
+//const sanitiseConfiguration = require('./sanitiser');
+import { sanitiseConfiguration } from './sanitiser';
 
 describe('recorder:', () => {
   describe('record mode:', () => {

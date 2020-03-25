@@ -1,5 +1,8 @@
-const puppeteer = require('puppeteer');
-const recorder = require('../../index');
+//const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
+
+//const recorder = require('../../index');
+import { recorder } from '../../index';
 
 const autoScroll = async (page) => {
   await page.evaluate(async () => {

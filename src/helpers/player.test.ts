@@ -1,6 +1,12 @@
-const fs = require('fs');
+//const fs = require('fs');
+import * as fs from 'fs';
+
+//// TO BE UPDATED?
+//// -- HOW TO IMPORT THIS, IF NO "player" DEFINED IN "player.ts"?!
 const player = require('./player');
-const sanitiseConfiguration = require('../sanitiser');
+
+//const sanitiseConfiguration = require('../sanitiser');
+import { sanitiseConfiguration } from '../sanitiser';
 
 jest.mock('fs', () => ({
   readFileSync: jest.fn(() => `[{

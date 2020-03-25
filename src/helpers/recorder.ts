@@ -1,9 +1,22 @@
-const parse = require('url-parse');
-const isImage = require('is-image');
-const path = require('path');
-const fs = require('fs');
-const { svgContentTypeHeader, svgContentLength } = require('../utils/svg-template');
-const { removeLastDirectoryPartOfUrl } = require('./url-helper');
+//const fs = require('fs');
+import fs from 'fs';
+
+//const parse = require('url-parse');
+import parse from 'url-parse';
+
+//const isImage = require('is-image');
+import isImage from 'is-image';
+
+//const path = require('path');
+import path from 'path';
+
+//const { svgContentTypeHeader, svgContentLength } = require('../utils/svg-template');
+import { svgContentTypeHeader, svgContentLength } from '../utils/svg-template';
+
+//const { removeLastDirectoryPartOfUrl } = require('./url-helper');
+import { removeLastDirectoryPartOfUrl } from './url-helper';
+
+import { scopeObj, responseObj } from '../custom-types';
 
 const removeDuplicates = (outputs) => {
   const obj = {};
@@ -13,7 +26,7 @@ const removeDuplicates = (outputs) => {
   }, obj)).map(i => obj[i]);
 };
 
-const getBrowserPages = async browser => browser.pages();
+const getBrowserPages = async (browser) => browser.pages();
 
 const handleRecordMode = async ({
   browser, config,
@@ -21,7 +34,8 @@ const handleRecordMode = async ({
   const scopes = [];
   const setResponseInterceptor = p => p.on('response', async (response) => {
     if (response.ok()) {
-      const scope = {};
+      //const scope = {};
+      let scope: scopeObj;
       const parsedUrl = parse(response.url(), true);
       scope.url = response.url();
       scope.fullPath = `${parsedUrl.origin}${parsedUrl.pathname}`;
@@ -51,7 +65,8 @@ const handleRecordMode = async ({
     await p.setRequestInterception(true);
     p.on('request', (request) => {
       if (request.resourceType() === 'image') {
-        const response = {};
+        //const response = {};
+        let response: responseObj;
         response.headers = request.headers();
         response.body = config.svgTemplate;
         response.headers['content-type'] = svgContentTypeHeader;
@@ -86,4 +101,5 @@ const handleRecordMode = async ({
   });
 };
 
-module.exports = handleRecordMode;
+//module.exports = handleRecordMode;
+export { handleRecordMode };

@@ -1,13 +1,30 @@
-const fs = require('fs');
-const isImage = require('is-image');
-const path = require('path');
-const parse = require('url-parse');
-const { svgContentTypeHeader, svgContentLength } = require('../utils/svg-template');
-const { removeLastDirectoryPartOfUrl } = require('./url-helper');
+//const fs = require('fs');
+import fs from 'fs';
 
-const getBrowserPages = async browser => browser.pages();
+//const isImage = require('is-image');
+import isImage from 'is-image';
 
-const getScope = (url, fixtures) => {
+//const path = require('path');
+import path from 'path';
+
+//const parse = require('url-parse');
+import parse from 'url-parse';
+
+//const { svgContentTypeHeader, svgContentLength } = require('../utils/svg-template');
+import { svgContentTypeHeader, svgContentLength } from '../utils/svg-template';
+
+//const { removeLastDirectoryPartOfUrl } = require('./url-helper');
+import { removeLastDirectoryPartOfUrl } from './url-helper';
+
+import { scopeObj } from '../custom-types';
+
+//// TO BE UPDATED?
+//// -- not sure what type "browser" should have
+//// -- see related notes from "index.ts"
+const getBrowserPages = async (browser: any) => browser.pages();
+
+//const getScope = (url, fixtures) => {
+const getScope = (url: string, fixtures: Array<scopeObj>) => {
   const elementPos = fixtures.map(x => x.url).indexOf(url);
   if (elementPos >= 0) {
     const objectFound = fixtures[elementPos];
@@ -28,7 +45,8 @@ const getScope = (url, fixtures) => {
 };
 
 const handlePlayMode = async ({ browser, config }) => {
-  const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath));
+  //const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath));
+  const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath).toString());
   const setRequestInterceptor = async (p) => {
     await p.setRequestInterception(true);
     p.on('request', (request) => {
@@ -58,4 +76,5 @@ const handlePlayMode = async ({ browser, config }) => {
   }
 };
 
-module.exports = handlePlayMode;
+//module.exports = handlePlayMode;
+export { handlePlayMode };

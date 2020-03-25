@@ -1,6 +1,11 @@
-const recorder = require('./index');
-const handleRecordMode = require('./helpers/recorder');
-const handlePlayMode = require('./helpers/player');
+//const recorder = require('./index');
+import { recorder } from './index';
+
+//const handleRecordMode = require('./helpers/recorder');
+import { handleRecordMode } from './helpers/recorder';
+
+//const handlePlayMode = require('./helpers/player');
+import { handlePlayMode } from './helpers/player';
 
 jest.mock('./helpers/recorder', () => jest.fn());
 jest.mock('./helpers/player', () => jest.fn());

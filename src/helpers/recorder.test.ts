@@ -1,6 +1,12 @@
-const fs = require('fs');
+//const fs = require('fs');
+import * as fs from 'fs';
+
+//// TO BE UPDATED?
+//// -- HOW TO IMPORT THIS, IF NO "recorder" DEFINED IN "recorder.ts"?!
 const recorder = require('./recorder');
-const sanitiseConfiguration = require('../sanitiser');
+
+//const sanitiseConfiguration = require('../sanitiser');
+import { sanitiseConfiguration } from '../sanitiser';
 
 jest.mock('fs', () => ({
   appendFileSync: jest.fn(),

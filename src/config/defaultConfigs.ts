@@ -1,4 +1,5 @@
-const { svgTemplate } = require('../utils/svg-template');
+//const { svgTemplate } = require('../utils/svg-template');
+import { svgTemplate } from '../utils/svg-template';
 
 const globalConfig = {
   fixturesDir: '__mockeer_fixture__',
@@ -9,4 +10,5 @@ const globalConfig = {
   replaceIfExists: true,
 };
 
-module.exports = { globalConfig };
+//module.exports = { globalConfig };
+export { globalConfig };
