@@ -1,7 +1,9 @@
 //const { svgTemplate } = require('../utils/svg-template');
 import { svgTemplate } from '../utils/svg-template';
 
-const globalConfig = {
+import { ConfigurationObj } from '../custom-types';
+
+const globalConfig: ConfigurationObj = {
   fixturesDir: '__mockeer_fixture__',
   fixtureName: 'chrome-http-mocks',
   svgTemplate,

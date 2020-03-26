@@ -1,31 +1,32 @@
-// defining custom types
+// defining some custom types
 // -- newly created file, not found in the original (JS) library
 
-interface configurationObj {
+import puppeteer from 'puppeteer';
+
+// defining "ConfigurationObj" based on the structure of "globalConfig"
+interface ConfigurationObj {
     allowImageRecourses: boolean;
-    fixtureFilePath: string;
     fixtureName: string;
     fixturesDir: string;
-    page: string;
     replaceIfExists: boolean;
     replaceImage: boolean;
     svgTemplate: string;
+    // optional properties, not defined in "globalConfig"
+    // -- maybe "fixtureFilePath" should be of type "fs.PathLike"?
+    // ---- if so, then "./helpers/file-helpers.ts" may also need to be updated
+    fixtureFilePath?: string;
+    page?: puppeteer.Page;
 };
 
-interface scopeObj {
+interface ScopeObj {
     body: string;
     fullPath: string;
-    headers: string;
-    method: string;
+    headers: puppeteer.Headers;
+    method: puppeteer.HttpMethod;
     minimalPath: string;
     query: object;
-    status: string;
+    status: number;
     url: string;
 };
 
-interface responseObj {
-    body: string;
-    headers: string;
-};
-
-export { configurationObj, scopeObj, responseObj };
+export { ConfigurationObj, ScopeObj };

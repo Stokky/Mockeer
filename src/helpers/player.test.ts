@@ -1,12 +1,16 @@
+//// TO BE CHECKED re: TS
+
 //const fs = require('fs');
-import * as fs from 'fs';
+import fs from 'fs';
 
 //// TO BE UPDATED?
-//// -- HOW TO IMPORT THIS, IF NO "player" DEFINED IN "player.ts"?!
+//// -- how to import this, if no "player" defined in "player.ts"?
 const player = require('./player');
 
 //const sanitiseConfiguration = require('../sanitiser');
 import { sanitiseConfiguration } from '../sanitiser';
+
+import { ConfigurationObj } from '../custom-types';
 
 jest.mock('fs', () => ({
   readFileSync: jest.fn(() => `[{
@@ -25,7 +29,7 @@ jest.mock('fs', () => ({
   }]`),
 }));
 
-const configuration = sanitiseConfiguration({ fixtureName: 'fixture-name' });
+const configuration: ConfigurationObj = sanitiseConfiguration({ fixtureName: 'fixture-name' });
 
 describe('Player:', () => {
   it('calls handlePlayMode with correct parameters', async () => {

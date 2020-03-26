@@ -1,3 +1,5 @@
+import puppeteer from 'puppeteer';
+
 //const fs = require('fs');
 import fs from 'fs';
 
@@ -16,27 +18,37 @@ import { svgContentTypeHeader, svgContentLength } from '../utils/svg-template';
 //const { removeLastDirectoryPartOfUrl } = require('./url-helper');
 import { removeLastDirectoryPartOfUrl } from './url-helper';
 
-import { scopeObj, responseObj } from '../custom-types';
+import { ConfigurationObj, ScopeObj } from '../custom-types';
 
-const removeDuplicates = (outputs) => {
-  const obj = {};
-  return Object.keys(outputs.reduce((prev, next) => {
+//const removeDuplicates = (outputs) => {
+const removeDuplicates = (outputs: Array<ScopeObj>) => {
+  // the keys of "obj" are dynamically generated based on the value of "url" from each "outputs" element
+  //const obj = {};
+  const obj: object = {};
+  // return Object.keys(outputs.reduce((prev, next) => {
+  //   if (!obj[next.url]) obj[next.url] = next;
+  //   return obj;
+  // }, obj)).map(i => obj[i]);
+  const outputsNoDuplicates: Array<ScopeObj> = Object.keys(outputs.reduce((prev, next) => {
     if (!obj[next.url]) obj[next.url] = next;
     return obj;
   }, obj)).map(i => obj[i]);
+  return outputsNoDuplicates;
 };
 
-const getBrowserPages = async (browser) => browser.pages();
+//const getBrowserPages = async (browser) => browser.pages();
+const getBrowserPages = async (browser: puppeteer.Browser) => browser.pages();
 
-const handleRecordMode = async ({
-  browser, config,
-}) => {
-  const scopes = [];
-  const setResponseInterceptor = p => p.on('response', async (response) => {
+//const handleRecordMode = async ({ browser, config }) => {
+const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ) => {
+  //const scopes = [];
+  const scopes: Array<ScopeObj> = [];
+  //const setResponseInterceptor = p => p.on('response', async (response) => {
+  const setResponseInterceptor = (p: puppeteer.Page) => p.on('response', async (response: puppeteer.Response) => {
     if (response.ok()) {
       //const scope = {};
-      let scope: scopeObj;
-      const parsedUrl = parse(response.url(), true);
+      let scope: ScopeObj;
+      const parsedUrl: parse = parse(response.url(), true);
       scope.url = response.url();
       scope.fullPath = `${parsedUrl.origin}${parsedUrl.pathname}`;
       scope.minimalPath = removeLastDirectoryPartOfUrl(scope.fullPath);
@@ -44,7 +56,7 @@ const handleRecordMode = async ({
       scope.headers = response.headers();
       scope.status = response.status();
       scope.method = response.request().method();
-      const isImg = isImage(scope.fullPath);
+      const isImg: boolean = isImage(scope.fullPath);
 
       if (!isImg) {
         scope.body = await response.text();
@@ -54,33 +66,39 @@ const handleRecordMode = async ({
       if (isImg && config.replaceImage && path.extname(scope.url) !== '.svg') {
         scope.body = config.svgTemplate;
         scope.headers['content-type'] = svgContentTypeHeader;
-        scope.headers['content-length'] = svgContentLength;
+        //scope.headers['content-length'] = svgContentLength;
+        scope.headers['content-length'] = svgContentLength.toString();
         return scopes.push(scope);
       }
     }
     return null;
   });
 
-  const setRequestInterceptor = async (p) => {
+  //const setRequestInterceptor = async (p) => {
+  const setRequestInterceptor = async (p: puppeteer.Page) => {
     await p.setRequestInterception(true);
-    p.on('request', (request) => {
+    //p.on('request', (request) => {
+    p.on('request', (request: puppeteer.Request) => {
       if (request.resourceType() === 'image') {
         //const response = {};
-        let response: responseObj;
+        let response: puppeteer.RespondOptions;
         response.headers = request.headers();
         response.body = config.svgTemplate;
         response.headers['content-type'] = svgContentTypeHeader;
-        response.headers['content-length'] = svgContentLength;
+        //response.headers['content-length'] = svgContentLength;
+        response.headers['content-length'] = svgContentLength.toString();
         return request.respond(response);
       }
       return request.continue();
     });
   };
 
-  let fixtureSaved = false;
+  //let fixtureSaved = false;
+  let fixtureSaved: boolean = false;
   const saveScopes = () => {
     fixtureSaved = true;
-    const reducedOutput = removeDuplicates(scopes);
+    //const reducedOutput = removeDuplicates(scopes);
+    const reducedOutput: Array<ScopeObj> = removeDuplicates(scopes);
     fs.appendFileSync(config.fixtureFilePath, JSON.stringify(reducedOutput));
   };
 
@@ -91,7 +109,8 @@ const handleRecordMode = async ({
       if (!fixtureSaved) { saveScopes(); }
     });
   } else {
-    const pages = await getBrowserPages(browser);
+    //const pages = await getBrowserPages(browser);
+    const pages: Array<puppeteer.Page> = await getBrowserPages(browser);
     pages.forEach(p => setResponseInterceptor(p));
     if (config.replaceImage) pages.forEach(p => setRequestInterceptor(p));
   }

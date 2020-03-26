@@ -1,16 +1,22 @@
+//// TO BE CHECKED re: TS
+
 //const puppeteer = require('puppeteer');
 import puppeteer from 'puppeteer';
 
 //const recorder = require('../../index');
 import { recorder } from '../../index';
 
-const autoScroll = async (page) => {
+//const autoScroll = async (page) => {
+const autoScroll = async (page: puppeteer.Page) => {
   await page.evaluate(async () => {
     await new Promise((resolve) => {
-      let totalHeight = 0;
-      const distance = 100;
+      //let totalHeight = 0;
+      let totalHeight: number = 0;
+      //const distance = 100;
+      const distance: number = 100;
       const timer = setInterval(() => {
-        const { scrollHeight } = document.body;
+        //const { scrollHeight } = document.body;
+        const { scrollHeight }: { scrollHeight: number } = document.body;
         window.scrollBy(0, distance);
         totalHeight += distance;
         if (totalHeight >= scrollHeight) {

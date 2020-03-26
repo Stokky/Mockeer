@@ -1,3 +1,5 @@
+import puppeteer from 'puppeteer';
+
 //const fs = require('fs');
 import fs from 'fs';
 
@@ -16,46 +18,62 @@ import { svgContentTypeHeader, svgContentLength } from '../utils/svg-template';
 //const { removeLastDirectoryPartOfUrl } = require('./url-helper');
 import { removeLastDirectoryPartOfUrl } from './url-helper';
 
-import { scopeObj } from '../custom-types';
+import { ConfigurationObj, ScopeObj } from '../custom-types';
 
-//// TO BE UPDATED?
-//// -- not sure what type "browser" should have
-//// -- see related notes from "index.ts"
-const getBrowserPages = async (browser: any) => browser.pages();
+//const getBrowserPages = async (browser) => browser.pages();
+const getBrowserPages = async (browser: puppeteer.Browser) => browser.pages();
 
 //const getScope = (url, fixtures) => {
-const getScope = (url: string, fixtures: Array<scopeObj>) => {
-  const elementPos = fixtures.map(x => x.url).indexOf(url);
+const getScope = (url: string, fixtures: Array<ScopeObj>) => {
+  //const elementPos = fixtures.map(x => x.url).indexOf(url);
+  const elementPos: number = fixtures.map(x => x.url).indexOf(url);
   if (elementPos >= 0) {
-    const objectFound = fixtures[elementPos];
+    //const objectFound = fixtures[elementPos];
+    const objectFound: ScopeObj = fixtures[elementPos];
     if (objectFound) {
-      const { body } = objectFound;
+      //const { body } = objectFound;
+      const { body }: { body: string } = objectFound;
       if (isImage(objectFound.fullPath) && path.extname(objectFound.url) !== '.svg') {
         objectFound.headers['content-type'] = svgContentTypeHeader;
-        objectFound.headers['content-length'] = svgContentLength;
+        //objectFound.headers['content-length'] = svgContentLength;
+        objectFound.headers['content-length'] = svgContentLength.toString();
       }
-      return {
+      // the "getScope" function should return an object of type "puppeteer.RespondOptions"
+      // return {
+      //   status: objectFound.status || 200,
+      //   headers: objectFound.headers,
+      //   //body,
+      //   body: body,
+      // };
+      const response: puppeteer.RespondOptions = {
         status: objectFound.status || 200,
         headers: objectFound.headers,
-        body,
+        body
+        // not returning "contentType" (optional property from "puppeteer.RespondOptions")
       };
+      return response;
     }
   }
   return null;
 };
 
-const handlePlayMode = async ({ browser, config }) => {
+//const handlePlayMode = async ({ browser, config }) => {
+const handlePlayMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ) => {
   //const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath));
-  const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath).toString());
-  const setRequestInterceptor = async (p) => {
+  const fixtures: Array<ScopeObj> = JSON.parse(fs.readFileSync(config.fixtureFilePath).toString());
+  //const setRequestInterceptor = async (p) => {
+  const setRequestInterceptor = async (p: puppeteer.Page) => {
     await p.setRequestInterception(true);
-    p.on('request', (request) => {
+    //p.on('request', (request) => {
+    p.on('request', (request: puppeteer.Request) => {
       if (request.resourceType() === 'image' && config.allowImageRecourses) {
         return request.continue();
       }
-      let response = getScope(request.url(), fixtures);
+      //let response = getScope(request.url(), fixtures);
+      let response: puppeteer.RespondOptions = getScope(request.url(), fixtures);
       if (!response) {
-        const parsedUrl = parse(request.url(), true);
+        //const parsedUrl = parse(request.url(), true);
+        const parsedUrl: parse = parse(request.url(), true);
         response = getScope(`${parsedUrl.origin}${parsedUrl.pathname}`, fixtures);
         if (!response) {
           response = getScope(removeLastDirectoryPartOfUrl(`${parsedUrl.origin}${parsedUrl.pathname}`), fixtures);
@@ -69,8 +87,10 @@ const handlePlayMode = async ({ browser, config }) => {
   if (config.page) {
     await setRequestInterceptor(config.page);
   } else {
-    const pagePromiseArray = [];
-    const pages = await getBrowserPages(browser);
+    //const pagePromiseArray = [];
+    const pagePromiseArray: Array<Promise<void>> = [];
+    //const pages = await getBrowserPages(browser);
+    const pages: Array<puppeteer.Page> = await getBrowserPages(browser);
     pages.forEach(p => pagePromiseArray.push(setRequestInterceptor(p)));
     await Promise.all(pagePromiseArray);
   }

@@ -1,3 +1,5 @@
+//// TO BE CHECKED re: TS
+
 //const sanitiseConfiguration = require('./sanitiser');
 import { sanitiseConfiguration } from './sanitiser';
 

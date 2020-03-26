@@ -1,18 +1,22 @@
+//// TO BE CHECKED re: TS
+
 //const fs = require('fs');
-import * as fs from 'fs';
+import fs from 'fs';
 
 //// TO BE UPDATED?
-//// -- HOW TO IMPORT THIS, IF NO "recorder" DEFINED IN "recorder.ts"?!
+//// -- how to import this, if no "recorder" defined in "recorder.ts"?
 const recorder = require('./recorder');
 
 //const sanitiseConfiguration = require('../sanitiser');
 import { sanitiseConfiguration } from '../sanitiser';
 
+import { ConfigurationObj } from '../custom-types';
+
 jest.mock('fs', () => ({
   appendFileSync: jest.fn(),
 }));
 
-const configuration = sanitiseConfiguration({ fixtureName: 'fixture-name' });
+const configuration: ConfigurationObj = sanitiseConfiguration({ fixtureName: 'fixture-name' });
 
 describe('Recorder:', () => {
   it('calls handleRecordMode with correct parameters', async () => {

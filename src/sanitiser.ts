@@ -13,18 +13,18 @@ import { getJestTestPath, getJestTestFolder, isJest } from './helpers/jest-helpe
 //const { getFixtureFile, getFixtureFolder } = require('./helpers/file-helper');
 import { getFixtureFile, getFixtureFolder } from './helpers/file-helper';
 
-import { configurationObj } from './custom-types';
+import { ConfigurationObj } from './custom-types';
 
 //const logError = (name, wrongType, correctType) => {
 const logError = (name: string, wrongType: string, correctType: string) => {
   throw new Error(`Invalid argument ${name} with type ${wrongType} been passed. Argument should be ${correctType}`);
 };
 
-const checkProperty = (obj, property, checkType) => {
+const checkProperty = (obj: ConfigurationObj, property: string, checkType: string) => {
   if (!obj) {
     return false;
   }
-  const hasProperty = Object.prototype.hasOwnProperty.call(obj, property);
+  const hasProperty: boolean = Object.prototype.hasOwnProperty.call(obj, property);
   if (!check[checkType](obj[property]) && hasProperty) {
     logError(property, type(obj[property]), checkType);
     return false;
@@ -33,14 +33,15 @@ const checkProperty = (obj, property, checkType) => {
 };
 
 //const sanitiseConfiguration = (conf) => {
-const sanitiseConfiguration = (conf: configurationObj) => {
+const sanitiseConfiguration = (conf: ConfigurationObj) => {
   //const configuration = {};
-  let configuration: configurationObj;
+  let configuration: ConfigurationObj;
 
   if (checkProperty(conf, 'fixturesDir', 'string')) {
     configuration.fixturesDir = conf.fixturesDir;
   } else if (isJest()) {
-    const fixtureFolder = getJestTestFolder();
+    //const fixtureFolder = getJestTestFolder();
+    const fixtureFolder: string = getJestTestFolder();
     configuration.fixturesDir = getFixtureFolder(fixtureFolder, '__fixtures__') || globalConfig.fixturesDir;
   } else {
     configuration.fixturesDir = globalConfig.fixturesDir;
@@ -70,7 +71,8 @@ const sanitiseConfiguration = (conf: configurationObj) => {
     ? conf.allowImageRecourses
     : globalConfig.allowImageRecourses;
 
-  configuration.page = checkProperty(conf, 'page', 'object')
+  //configuration.page = checkProperty(conf, 'page', 'object')
+  configuration.page = checkProperty(conf, 'page', 'puppeteer.Page')
     ? conf.page
     : null;
 

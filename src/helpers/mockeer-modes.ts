@@ -2,7 +2,12 @@
 //   RECORD: 'record',
 //   PLAY: 'play',
 // });
-const MODES = Object.freeze({
+interface MODESObj {
+  RECORD: string,
+  PLAY: string
+};
+
+const MODES: Readonly<MODESObj> = Object.freeze({
   RECORD: 'record',
   PLAY: 'play',
 });

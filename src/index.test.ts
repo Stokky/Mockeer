@@ -1,3 +1,5 @@
+//// TO BE CHECKED re: TS
+
 //const recorder = require('./index');
 import { recorder } from './index';
 
