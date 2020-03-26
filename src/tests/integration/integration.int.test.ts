@@ -1,5 +1,3 @@
-//// TO BE CHECKED re: TS
-
 //const puppeteer = require('puppeteer');
 import puppeteer from 'puppeteer';
 

@@ -20,7 +20,8 @@ const isJest = () => {
 };
 
 const getJestMode = () => {
-  //// TO BE UPDATED? - not sure how to specify the type for "testStats" in this situation
+  //// TO BE UPDATED?
+  //// -- not sure how to specify the type for "testStats" in this situation
   const testStats = expect.getState() || null;
   return testStats && testStats.snapshotState._updateSnapshot === 'all' ? MODES.RECORD : MODES.PLAY;
 };

@@ -1,11 +1,10 @@
-//// TO BE CHECKED re: TS
-
 //const fs = require('fs');
 import fs from 'fs';
 
 //// TO BE UPDATED?
 //// -- how to import this, if no "recorder" defined in "recorder.ts"?
 const recorder = require('./recorder');
+//import * as recorder from './recorder';
 
 //const sanitiseConfiguration = require('../sanitiser');
 import { sanitiseConfiguration } from '../sanitiser';

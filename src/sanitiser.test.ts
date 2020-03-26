@@ -1,12 +1,12 @@
-//// TO BE CHECKED re: TS
-
 //const sanitiseConfiguration = require('./sanitiser');
 import { sanitiseConfiguration } from './sanitiser';
+
+import { ConfigurationObj } from './custom-types';
 
 describe('recorder:', () => {
   describe('record mode:', () => {
     it('sanitise if no config provided', () => {
-      const configuration = sanitiseConfiguration();
+      const configuration: ConfigurationObj = sanitiseConfiguration();
       expect(configuration).toEqual(expect.objectContaining({
         allowImageRecourses: false,
         fixtureFilePath: expect.stringContaining('src/__fixtures__/recorder record mode sanitise if no config provided.json'),
@@ -17,7 +17,7 @@ describe('recorder:', () => {
       }));
     });
     it('gets the fixture path from fixturesDir', () => {
-      const configuration = sanitiseConfiguration({ fixturesDir: 'path/to/fixtures' });
+      const configuration: ConfigurationObj = sanitiseConfiguration({ fixturesDir: 'path/to/fixtures' });
       expect(configuration).toEqual(expect.objectContaining({
         allowImageRecourses: false,
         fixtureFilePath: expect.stringContaining('path/to/fixtures/recorder record mode gets the fixture path from fixturesDir.json'),
@@ -28,7 +28,7 @@ describe('recorder:', () => {
       }));
     });
     it('gets the fixture name from fixtureName', () => {
-      const configuration = sanitiseConfiguration({ fixtureName: 'fixture-name' });
+      const configuration: ConfigurationObj = sanitiseConfiguration({ fixtureName: 'fixture-name' });
       expect(configuration).toEqual(expect.objectContaining({
         allowImageRecourses: false,
         fixtureFilePath: expect.stringContaining('src/__fixtures__/fixture-name.json'),
