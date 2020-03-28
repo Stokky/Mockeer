@@ -3,6 +3,7 @@ import { svgTemplate } from '../utils/svg-template';
 
 import { ConfigurationObj } from '../custom-types';
 
+//const globalConfig = {
 const globalConfig: ConfigurationObj = {
   fixturesDir: '__mockeer_fixture__',
   fixtureName: 'chrome-http-mocks',

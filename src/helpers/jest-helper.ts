@@ -33,7 +33,9 @@ const getJestTestFolder = () => (isJest() ? path.dirname(expect.getState().testP
 
 const isUpdate = () => (isJest() ? expect.getState().snapshotState._updateSnapshot === 'all' : false);
 
-// module.exports = {
-//   getJestMode, isJest, getJestTestPath, isUpdate, getJestTestFolder,
-// };
+/*
+module.exports = {
+  getJestMode, isJest, getJestTestPath, isUpdate, getJestTestFolder,
+};
+*/
 export { getJestMode, isJest, getJestTestPath, isUpdate, getJestTestFolder };

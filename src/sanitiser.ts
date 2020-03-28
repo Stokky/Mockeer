@@ -20,6 +20,7 @@ const logError = (name: string, wrongType: string, correctType: string) => {
   throw new Error(`Invalid argument ${name} with type ${wrongType} been passed. Argument should be ${correctType}`);
 };
 
+//const checkProperty = (obj, property, checkType) => {
 const checkProperty = (obj: ConfigurationObj, property: string, checkType: string) => {
   if (!obj) {
     return false;

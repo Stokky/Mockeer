@@ -15,10 +15,12 @@ import { sanitiseConfiguration } from './sanitiser';
 //const { isUpdate } = require('./helpers/jest-helper');
 import { isUpdate } from './helpers/jest-helper';
 
-// const MODES = Object.freeze({
-//   RECORD: 'record',
-//   PLAY: 'play',
-// });
+/*
+const MODES = Object.freeze({
+  RECORD: 'record',
+  PLAY: 'play',
+});
+*/
 import { MODES } from './helpers/mockeer-modes';
 
 import { ConfigurationObj } from './custom-types';

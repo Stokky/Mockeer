@@ -1,10 +1,8 @@
 //const fs = require('fs');
 import fs from 'fs';
 
-//// TO BE UPDATED?
-//// -- how to import this, if no "player" defined in "player.ts"?
-const player = require('./player');
-//import * as player from './player';
+//const player = require('./player');
+import { handlePlayMode as player } from './player';
 
 //const sanitiseConfiguration = require('../sanitiser');
 import { sanitiseConfiguration } from '../sanitiser';
