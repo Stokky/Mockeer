@@ -83,7 +83,7 @@ const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browse
     p.on('request', (request: puppeteer.Request) => {
       if (request.resourceType() === 'image') {
         //const response = {};
-        let response: puppeteer.RespondOptions;
+        let response: puppeteer.RespondOptions = <puppeteer.RespondOptions>{};
         response.headers = request.headers();
         response.body = config.svgTemplate;
         response.headers['content-type'] = svgContentTypeHeader;

@@ -127,7 +127,7 @@ var handleRecordMode = function (_a) {
                                     p.on('request', function (request) {
                                         if (request.resourceType() === 'image') {
                                             //const response = {};
-                                            var response = void 0;
+                                            var response = {};
                                             response.headers = request.headers();
                                             response.body = config.svgTemplate;
                                             response.headers['content-type'] = svg_template_1.svgContentTypeHeader;
