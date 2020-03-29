@@ -87,7 +87,7 @@ var handleRecordMode = function (_a) {
                             switch (_b.label) {
                                 case 0:
                                     if (!response.ok()) return [3 /*break*/, 3];
-                                    scope = void 0;
+                                    scope = {};
                                     parsedUrl = url_parse_1.default(response.url(), true);
                                     scope.url = response.url();
                                     scope.fullPath = "" + parsedUrl.origin + parsedUrl.pathname;

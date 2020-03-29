@@ -36,7 +36,7 @@ const checkProperty = (obj: ConfigurationObj, property: string, checkType: strin
 //const sanitiseConfiguration = (conf) => {
 const sanitiseConfiguration = (conf: ConfigurationObj) => {
   //const configuration = {};
-  let configuration: ConfigurationObj;
+  let configuration: ConfigurationObj = <ConfigurationObj>{};
 
   if (checkProperty(conf, 'fixturesDir', 'string')) {
     configuration.fixturesDir = conf.fixturesDir;

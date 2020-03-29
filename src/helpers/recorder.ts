@@ -49,7 +49,7 @@ const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browse
   const setResponseInterceptor = (p: puppeteer.Page) => p.on('response', async (response: puppeteer.Response) => {
     if (response.ok()) {
       //const scope = {};
-      let scope: ScopeObj;
+      let scope: ScopeObj = <ScopeObj>{};
       const parsedUrl: parse = parse(response.url(), true);
       scope.url = response.url();
       scope.fullPath = `${parsedUrl.origin}${parsedUrl.pathname}`;

@@ -32,7 +32,7 @@ var checkProperty = function (obj, property, checkType) {
 //const sanitiseConfiguration = (conf) => {
 var sanitiseConfiguration = function (conf) {
     //const configuration = {};
-    var configuration;
+    var configuration = {};
     if (checkProperty(conf, 'fixturesDir', 'string')) {
         configuration.fixturesDir = conf.fixturesDir;
     }
