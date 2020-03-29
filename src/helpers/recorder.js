@@ -81,42 +81,44 @@ var handleRecordMode = function (_a) {
             switch (_b.label) {
                 case 0:
                     scopes = [];
-                    setResponseInterceptor = function (p) { return p.on('response', function (response) { return __awaiter(void 0, void 0, void 0, function () {
-                        var scope, parsedUrl, isImg, _a;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    if (!response.ok()) return [3 /*break*/, 3];
-                                    scope = {};
-                                    parsedUrl = url_parse_1.default(response.url(), true);
-                                    scope.url = response.url();
-                                    scope.fullPath = "" + parsedUrl.origin + parsedUrl.pathname;
-                                    scope.minimalPath = url_helper_1.removeLastDirectoryPartOfUrl(scope.fullPath);
-                                    scope.query = parsedUrl.query;
-                                    scope.headers = response.headers();
-                                    scope.status = response.status();
-                                    scope.method = response.request().method();
-                                    isImg = is_image_1.default(scope.fullPath);
-                                    if (!!isImg) return [3 /*break*/, 2];
-                                    _a = scope;
-                                    return [4 /*yield*/, response.text()];
-                                case 1:
-                                    _a.body = _b.sent();
-                                    scopes.push(scope);
-                                    return [2 /*return*/, scopes];
-                                case 2:
-                                    if (isImg && config.replaceImage && path_1.default.extname(scope.url) !== '.svg') {
-                                        scope.body = config.svgTemplate;
-                                        scope.headers['content-type'] = svg_template_1.svgContentTypeHeader;
-                                        //scope.headers['content-length'] = svgContentLength;
-                                        scope.headers['content-length'] = svg_template_1.svgContentLength.toString();
-                                        return [2 /*return*/, scopes.push(scope)];
-                                    }
-                                    _b.label = 3;
-                                case 3: return [2 /*return*/, null];
-                            }
-                        });
-                    }); }); };
+                    setResponseInterceptor = function (p) {
+                        return p.on('response', function (response) { return __awaiter(void 0, void 0, void 0, function () {
+                            var scope, parsedUrl, isImg, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        if (!response.ok()) return [3 /*break*/, 3];
+                                        scope = {};
+                                        parsedUrl = url_parse_1.default(response.url(), true);
+                                        scope.url = response.url();
+                                        scope.fullPath = "" + parsedUrl.origin + parsedUrl.pathname;
+                                        scope.minimalPath = url_helper_1.removeLastDirectoryPartOfUrl(scope.fullPath);
+                                        scope.query = parsedUrl.query;
+                                        scope.headers = response.headers();
+                                        scope.status = response.status();
+                                        scope.method = response.request().method();
+                                        isImg = is_image_1.default(scope.fullPath);
+                                        if (!!isImg) return [3 /*break*/, 2];
+                                        _a = scope;
+                                        return [4 /*yield*/, response.text()];
+                                    case 1:
+                                        _a.body = _b.sent();
+                                        scopes.push(scope);
+                                        return [2 /*return*/, scopes];
+                                    case 2:
+                                        if (isImg && config.replaceImage && path_1.default.extname(scope.url) !== '.svg') {
+                                            scope.body = config.svgTemplate;
+                                            scope.headers['content-type'] = svg_template_1.svgContentTypeHeader;
+                                            //scope.headers['content-length'] = svgContentLength;
+                                            scope.headers['content-length'] = svg_template_1.svgContentLength.toString();
+                                            return [2 /*return*/, scopes.push(scope)];
+                                        }
+                                        _b.label = 3;
+                                    case 3: return [2 /*return*/, null];
+                                }
+                            });
+                        }); });
+                    };
                     setRequestInterceptor = function (p) { return __awaiter(void 0, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
@@ -150,8 +152,9 @@ var handleRecordMode = function (_a) {
                     };
                     if (!config.page) return [3 /*break*/, 1];
                     setResponseInterceptor(config.page);
-                    if (config.replaceImage)
+                    if (config.replaceImage) {
                         setRequestInterceptor(config.page);
+                    }
                     config.page.on('close', function () {
                         if (!fixtureSaved) {
                             saveScopes();

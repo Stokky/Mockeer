@@ -8,9 +8,9 @@ import { MODES } from './mockeer-modes';
 import { getFixtureFile } from './file-helper';
 
 //const isFunc = property => (typeof (property) === 'function');
-const isFunc = (property: any) => (typeof (property) === 'function');
+const isFunc = (property: any): boolean => (typeof (property) === 'function');
 
-const isJest = () => {
+const isJest = (): boolean => {
   try {
     return (expect && isFunc(expect.getState));
   } catch (error) {
@@ -19,7 +19,7 @@ const isJest = () => {
   return false;
 };
 
-const getJestMode = () => {
+const getJestMode = (): string => {
   //// TO BE UPDATED?
   //// -- not sure how to specify the type for "testStats" in this situation
   const testStats = expect.getState() || null;
@@ -27,11 +27,11 @@ const getJestMode = () => {
 };
 
 //const getJestTestPath = fixturesDir => (isJest() ? getFixtureFile(fixturesDir, expect.getState().currentTestName) : null);
-const getJestTestPath = (fixturesDir: string) => (isJest() ? getFixtureFile(fixturesDir, expect.getState().currentTestName) : null);
+const getJestTestPath = (fixturesDir: string): string => (isJest() ? getFixtureFile(fixturesDir, expect.getState().currentTestName) : null);
 
-const getJestTestFolder = () => (isJest() ? path.dirname(expect.getState().testPath) : null);
+const getJestTestFolder = (): string => (isJest() ? path.dirname(expect.getState().testPath) : null);
 
-const isUpdate = () => (isJest() ? expect.getState().snapshotState._updateSnapshot === 'all' : false);
+const isUpdate = (): boolean => (isJest() ? expect.getState().snapshotState._updateSnapshot === 'all' : false);
 
 /*
 module.exports = {

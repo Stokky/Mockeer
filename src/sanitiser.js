@@ -13,6 +13,8 @@ var defaultConfigs_1 = require("./config/defaultConfigs");
 var jest_helper_1 = require("./helpers/jest-helper");
 //const { getFixtureFile, getFixtureFolder } = require('./helpers/file-helper');
 var file_helper_1 = require("./helpers/file-helper");
+//// TO BE UPDATED?
+//// -- what type should be set for the function itself, in this case?
 //const logError = (name, wrongType, correctType) => {
 var logError = function (name, wrongType, correctType) {
     throw new Error("Invalid argument " + name + " with type " + wrongType + " been passed. Argument should be " + correctType);

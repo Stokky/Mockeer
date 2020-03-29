@@ -15,13 +15,15 @@ import { getFixtureFile, getFixtureFolder } from './helpers/file-helper';
 
 import { ConfigurationObj } from './custom-types';
 
+//// TO BE UPDATED?
+//// -- what type should be set for the function itself, in this case?
 //const logError = (name, wrongType, correctType) => {
 const logError = (name: string, wrongType: string, correctType: string) => {
   throw new Error(`Invalid argument ${name} with type ${wrongType} been passed. Argument should be ${correctType}`);
 };
 
 //const checkProperty = (obj, property, checkType) => {
-const checkProperty = (obj: ConfigurationObj, property: string, checkType: string) => {
+const checkProperty = (obj: ConfigurationObj, property: string, checkType: string): boolean => {
   if (!obj) {
     return false;
   }
@@ -34,7 +36,7 @@ const checkProperty = (obj: ConfigurationObj, property: string, checkType: strin
 };
 
 //const sanitiseConfiguration = (conf) => {
-const sanitiseConfiguration = (conf: ConfigurationObj) => {
+const sanitiseConfiguration = (conf: ConfigurationObj): ConfigurationObj => {
   //const configuration = {};
   let configuration: ConfigurationObj = <ConfigurationObj>{};
 

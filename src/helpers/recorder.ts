@@ -21,7 +21,7 @@ import { removeLastDirectoryPartOfUrl } from './url-helper';
 import { ConfigurationObj, ScopeObj } from '../custom-types';
 
 //const removeDuplicates = (outputs) => {
-const removeDuplicates = (outputs: Array<ScopeObj>) => {
+const removeDuplicates = (outputs: ScopeObj[]): ScopeObj[] => {
   // the keys of "obj" are dynamically generated based on the value of "url" from each "outputs" element
   //const obj = {};
   const obj: object = {};
@@ -29,7 +29,7 @@ const removeDuplicates = (outputs: Array<ScopeObj>) => {
   //   if (!obj[next.url]) obj[next.url] = next;
   //   return obj;
   // }, obj)).map(i => obj[i]);
-  const outputsNoDuplicates: Array<ScopeObj> = Object.keys(outputs.reduce((prev, next) => {
+  const outputsNoDuplicates: ScopeObj[] = Object.keys(outputs.reduce((prev, next) => {
     if (!obj[next.url]) {
       obj[next.url] = next;
     }
@@ -39,45 +39,47 @@ const removeDuplicates = (outputs: Array<ScopeObj>) => {
 };
 
 //const getBrowserPages = async (browser) => browser.pages();
-const getBrowserPages = async (browser: puppeteer.Browser) => browser.pages();
+const getBrowserPages = async (browser: puppeteer.Browser): Promise<puppeteer.Page[]> => browser.pages();
 
 //const handleRecordMode = async ({ browser, config }) => {
-const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ) => {
+const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ): Promise<void> => {
   //const scopes = [];
-  const scopes: Array<ScopeObj> = [];
+  const scopes: ScopeObj[] = [];
   //const setResponseInterceptor = p => p.on('response', async (response) => {
-  const setResponseInterceptor = (p: puppeteer.Page) => p.on('response', async (response: puppeteer.Response) => {
-    if (response.ok()) {
-      //const scope = {};
-      let scope: ScopeObj = <ScopeObj>{};
-      const parsedUrl: parse = parse(response.url(), true);
-      scope.url = response.url();
-      scope.fullPath = `${parsedUrl.origin}${parsedUrl.pathname}`;
-      scope.minimalPath = removeLastDirectoryPartOfUrl(scope.fullPath);
-      scope.query = parsedUrl.query;
-      scope.headers = response.headers();
-      scope.status = response.status();
-      scope.method = response.request().method();
-      const isImg: boolean = isImage(scope.fullPath);
+  const setResponseInterceptor = (p: puppeteer.Page): puppeteer.Page => {
+    return p.on('response', async (response: puppeteer.Response) => {
+      if (response.ok()) {
+        //const scope = {};
+        let scope: ScopeObj = <ScopeObj>{};
+        const parsedUrl: parse = parse(response.url(), true);
+        scope.url = response.url();
+        scope.fullPath = `${parsedUrl.origin}${parsedUrl.pathname}`;
+        scope.minimalPath = removeLastDirectoryPartOfUrl(scope.fullPath);
+        scope.query = parsedUrl.query;
+        scope.headers = response.headers();
+        scope.status = response.status();
+        scope.method = response.request().method();
+        const isImg: boolean = isImage(scope.fullPath);
 
-      if (!isImg) {
-        scope.body = await response.text();
-        scopes.push(scope);
-        return scopes;
+        if (!isImg) {
+          scope.body = await response.text();
+          scopes.push(scope);
+          return scopes;
+        }
+        if (isImg && config.replaceImage && path.extname(scope.url) !== '.svg') {
+          scope.body = config.svgTemplate;
+          scope.headers['content-type'] = svgContentTypeHeader;
+          //scope.headers['content-length'] = svgContentLength;
+          scope.headers['content-length'] = svgContentLength.toString();
+          return scopes.push(scope);
+        }
       }
-      if (isImg && config.replaceImage && path.extname(scope.url) !== '.svg') {
-        scope.body = config.svgTemplate;
-        scope.headers['content-type'] = svgContentTypeHeader;
-        //scope.headers['content-length'] = svgContentLength;
-        scope.headers['content-length'] = svgContentLength.toString();
-        return scopes.push(scope);
-      }
-    }
-    return null;
-  });
+      return null;
+    });
+  }
 
   //const setRequestInterceptor = async (p) => {
-  const setRequestInterceptor = async (p: puppeteer.Page) => {
+  const setRequestInterceptor = async (p: puppeteer.Page): Promise<void> => {
     await p.setRequestInterception(true);
     //p.on('request', (request) => {
     p.on('request', (request: puppeteer.Request) => {
@@ -97,16 +99,18 @@ const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browse
 
   //let fixtureSaved = false;
   let fixtureSaved: boolean = false;
-  const saveScopes = () => {
+  const saveScopes = (): void => {
     fixtureSaved = true;
     //const reducedOutput = removeDuplicates(scopes);
-    const reducedOutput: Array<ScopeObj> = removeDuplicates(scopes);
+    const reducedOutput: ScopeObj[] = removeDuplicates(scopes);
     fs.appendFileSync(config.fixtureFilePath, JSON.stringify(reducedOutput));
   };
 
   if (config.page) {
     setResponseInterceptor(config.page);
-    if (config.replaceImage) setRequestInterceptor(config.page);
+    if (config.replaceImage) {
+      setRequestInterceptor(config.page);
+    }
     config.page.on('close', () => {
       if (!fixtureSaved) {
         saveScopes();
@@ -114,7 +118,7 @@ const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browse
     });
   } else {
     //const pages = await getBrowserPages(browser);
-    const pages: Array<puppeteer.Page> = await getBrowserPages(browser);
+    const pages: puppeteer.Page[] = await getBrowserPages(browser);
     pages.forEach(p => setResponseInterceptor(p));
     if (config.replaceImage) {
       pages.forEach(p => setRequestInterceptor(p));

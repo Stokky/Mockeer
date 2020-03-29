@@ -26,7 +26,7 @@ import { MODES } from './helpers/mockeer-modes';
 import { ConfigurationObj } from './custom-types';
 
 //const recorder = async (browser, configuration) => {
-const recorder = async (browser: puppeteer.Browser, configuration: ConfigurationObj) => {
+const recorder = async (browser: puppeteer.Browser, configuration: ConfigurationObj): Promise<void> => {
   if (!browser) {
     throw new Error('`browser` is a required parameter');
   }

@@ -21,10 +21,10 @@ import { removeLastDirectoryPartOfUrl } from './url-helper';
 import { ConfigurationObj, ScopeObj } from '../custom-types';
 
 //const getBrowserPages = async (browser) => browser.pages();
-const getBrowserPages = async (browser: puppeteer.Browser) => browser.pages();
+const getBrowserPages = async (browser: puppeteer.Browser): Promise<puppeteer.Page[]> => browser.pages();
 
 //const getScope = (url, fixtures) => {
-const getScope = (url: string, fixtures: Array<ScopeObj>) => {
+const getScope = (url: string, fixtures: ScopeObj[]): puppeteer.RespondOptions => {
   //const elementPos = fixtures.map(x => x.url).indexOf(url);
   const elementPos: number = fixtures.map(x => x.url).indexOf(url);
   if (elementPos >= 0) {
@@ -58,11 +58,11 @@ const getScope = (url: string, fixtures: Array<ScopeObj>) => {
 };
 
 //const handlePlayMode = async ({ browser, config }) => {
-const handlePlayMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ) => {
+const handlePlayMode = async ({ browser, config }: { browser: puppeteer.Browser, config: ConfigurationObj } ): Promise<void> => {
   //const fixtures = JSON.parse(fs.readFileSync(config.fixtureFilePath));
-  const fixtures: Array<ScopeObj> = JSON.parse(fs.readFileSync(config.fixtureFilePath).toString());
+  const fixtures: ScopeObj[] = JSON.parse(fs.readFileSync(config.fixtureFilePath).toString());
   //const setRequestInterceptor = async (p) => {
-  const setRequestInterceptor = async (p: puppeteer.Page) => {
+  const setRequestInterceptor = async (p: puppeteer.Page): Promise<void> => {
     await p.setRequestInterception(true);
     //p.on('request', (request) => {
     p.on('request', (request: puppeteer.Request) => {
@@ -88,9 +88,9 @@ const handlePlayMode = async ({ browser, config }: { browser: puppeteer.Browser,
     await setRequestInterceptor(config.page);
   } else {
     //const pagePromiseArray = [];
-    const pagePromiseArray: Array<Promise<void>> = [];
+    const pagePromiseArray: Promise<void>[] = [];
     //const pages = await getBrowserPages(browser);
-    const pages: Array<puppeteer.Page> = await getBrowserPages(browser);
+    const pages: puppeteer.Page[] = await getBrowserPages(browser);
     pages.forEach(p => pagePromiseArray.push(setRequestInterceptor(p)));
     await Promise.all(pagePromiseArray);
   }
