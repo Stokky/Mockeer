@@ -17,18 +17,18 @@ Mockeer works in `Record` and `Play` mode. In record mode it intercepts browser 
 ## Installation
 
 ```bash
-$ npm install mockeer
+$ npm install mockeer_ts
 ```
 
 ## Usage
 ```js
-const mockeer = require('mockeer');
+const mockeer_ts = require('mockeer_ts');
 const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await mockeer(browser);
+  await mockeer_ts(browser);
   await page.goto('https://www.example.com');
   await page.close();
   await browser.close();

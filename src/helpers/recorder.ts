@@ -30,7 +30,9 @@ const removeDuplicates = (outputs: Array<ScopeObj>) => {
   //   return obj;
   // }, obj)).map(i => obj[i]);
   const outputsNoDuplicates: Array<ScopeObj> = Object.keys(outputs.reduce((prev, next) => {
-    if (!obj[next.url]) obj[next.url] = next;
+    if (!obj[next.url]) {
+      obj[next.url] = next;
+    }
     return obj;
   }, obj)).map(i => obj[i]);
   return outputsNoDuplicates;
@@ -106,17 +108,23 @@ const handleRecordMode = async ({ browser, config }: { browser: puppeteer.Browse
     setResponseInterceptor(config.page);
     if (config.replaceImage) setRequestInterceptor(config.page);
     config.page.on('close', () => {
-      if (!fixtureSaved) { saveScopes(); }
+      if (!fixtureSaved) {
+        saveScopes();
+      }
     });
   } else {
     //const pages = await getBrowserPages(browser);
     const pages: Array<puppeteer.Page> = await getBrowserPages(browser);
     pages.forEach(p => setResponseInterceptor(p));
-    if (config.replaceImage) pages.forEach(p => setRequestInterceptor(p));
+    if (config.replaceImage) {
+      pages.forEach(p => setRequestInterceptor(p));
+    }
   }
 
   browser.on('disconnected', () => {
-    if (!fixtureSaved) { saveScopes(); }
+    if (!fixtureSaved) {
+      saveScopes();
+    }
   });
 };
 

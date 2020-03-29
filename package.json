@@ -1,7 +1,7 @@
 {
-  "name": "mockeer",
+  "name": "mockeer_ts",
   "version": "0.0.5",
-  "description": "mocking puppeteer network calls",
+  "description": "mocking puppeteer network calls [TS conversion]",
   "main": "src/index.js",
   "keywords": [
     "puppeteer",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:NimaSoroush/mockeer.git"
+    "url": "git@github.com:Stokky/Mockeer.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
